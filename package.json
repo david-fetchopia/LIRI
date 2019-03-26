@@ -1,0 +1,23 @@
+{
+  "name": "liri",
+  "version": "1.0.0",
+  "description": "Language Interpretation and Recognition Interface",
+  "main": "liri.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/david-fetchopia/LIRI.git"
+  },
+  "author": "DMA",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/david-fetchopia/LIRI/issues"
+  },
+  "homepage": "https://github.com/david-fetchopia/LIRI#readme",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "node-spotify-api": "^1.0.7"
+  }
+}
