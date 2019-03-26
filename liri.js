@@ -41,7 +41,33 @@ function liri_spotify(track_name) {
 }
 
 function liri_concert(artist_name) {
-    
+    if (artist_name === undefined) {
+        console.log("Please provide Artist field");
+    }
+    else {
+        artist_name = artist_name.split(" ");
+        let artist_name_query = "";
+        for (var i = 0; i < artist_name.length; i++) {
+            if (artist_name_query === "") {
+                artist_name_query += artist_name[i];
+            }
+            else {
+                artist_name_query += "%20" + artist_name[i];
+            }
+        }
+        let queryUrl = "https://rest.bandsintown.com/artists/" + artist_name_query + "/events?app_id=codingbootcamp";
+        console.log(queryUrl);
+        axios.get(queryUrl).then(function(response) {
+            for(var i = 0; i < response.data.length; i++) {
+                console.log(response.data[i].venue.name);
+                let city = response.data[i].venue.city;
+                let region = response.data[i].venue.region;
+                let country = response.data[i].venue.country;
+                console.log(city + ", " + region + ", " + country);
+                console.log(response.data[i].datetime);
+            }
+        });
+    }
 }
 
 function liri_movie(movie_name) {
