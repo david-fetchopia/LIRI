@@ -1,6 +1,7 @@
 require('dotenv').config();
 let Spotify = require('node-spotify-api');
 let axios = require("axios");
+let moment = require('moment');
 
 let keys = require("./keys.js");
 let input = process.argv;
@@ -16,10 +17,10 @@ function liri_spotify(track_name) {
             let song_name = data['tracks']["items"][0]['name'];
             let preview_link = data['tracks']["items"][0]['external_urls']['spotify'];
             let album_name = data['tracks']["items"][0]['album']['name'];
-            console.log(artists);
-            console.log(song_name);
-            console.log(preview_link);
-            console.log(album_name);
+            console.log("* Artist(s): " + artists);
+            console.log("* Track: " + song_name);
+            console.log("* Preview Link: " + preview_link);
+            console.log("* Album: " + album_name);
         });
     }
     else {
@@ -31,10 +32,10 @@ function liri_spotify(track_name) {
             let song_name = data['tracks']["items"][0]['name'];
             let preview_link = data['tracks']["items"][0]['external_urls']['spotify'];
             let album_name = data['tracks']["items"][0]['album']['name'];
-            console.log(artists);
-            console.log(song_name);
-            console.log(preview_link);
-            console.log(album_name);
+            console.log("* Artist(s): " + artists);
+            console.log("* Track: " + song_name);
+            console.log("* Preview Link: " + preview_link);
+            console.log("* Album: " + album_name);
         });
     }
     
@@ -45,18 +46,7 @@ function liri_concert(artist_name) {
         console.log("Please provide Artist field");
     }
     else {
-        artist_name = artist_name.split(" ");
-        let artist_name_query = "";
-        for (var i = 0; i < artist_name.length; i++) {
-            if (artist_name_query === "") {
-                artist_name_query += artist_name[i];
-            }
-            else {
-                artist_name_query += "%20" + artist_name[i];
-            }
-        }
-        let queryUrl = "https://rest.bandsintown.com/artists/" + artist_name_query + "/events?app_id=codingbootcamp";
-        console.log(queryUrl);
+        let queryUrl = "https://rest.bandsintown.com/artists/" + artist_name + "/events?app_id=codingbootcamp";
         axios.get(queryUrl).then(function(response) {
             for(var i = 0; i < response.data.length; i++) {
                 console.log(response.data[i].venue.name);
@@ -64,7 +54,8 @@ function liri_concert(artist_name) {
                 let region = response.data[i].venue.region;
                 let country = response.data[i].venue.country;
                 console.log(city + ", " + region + ", " + country);
-                console.log(response.data[i].datetime);
+                console.log(moment(response.data[i].datetime).format("MM/DD/YYYY"));
+                console.log("-------------------------------------------------");
             }
         });
     }
@@ -126,7 +117,17 @@ switch(input[2]) {
         liri_dotxt;
         break;
     case 'concert-this':
-        liri_concert(input[3]);
+        let artist = "";
+        //i=3 starts from the first input after concert-this
+        for (var i = 3; i < input.length; i++) {
+            if (artist === "") {
+                artist += input[i];
+            }
+            else {
+                artist += '%20' + input[i];
+            }
+        }
+        liri_concert(artist);
         break;
     case 'movie-this':
         liri_movie(input[3]);
